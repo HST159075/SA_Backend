@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  Admin
+  User
+}
+
+model User {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  image       String?
+  password    String?
+  usedStorage BigInt   @default(0)
+  role        String   @default("USER") // ADMIN বা USER আলাদা করার জন্য
+  files       File[] // রিলেশন: একজন ইউজারের অনেক ফাইল থাকতে পারে
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model File {
+  id        String   @id @default(cuid())
+  name      String? // ফাইলের নাম
+  content   String? // যদি শুধু টেক্সট বা লিংক শেয়ার করা হয়
+  url       String? // ক্লাউড স্টোরেজ লিংক (ইমেজ/ভিডিও/ফাইলের জন্য)
+  type      String // "FILE", "TEXT", "LINK", "IMAGE", "VIDEO"
+  size      Int      @default(0)
+  shareCode String   @unique // সেই ম্যাজিক ৬-ডিজিটের কোড
+  expiresAt DateTime // ফাইলটি কখন ডিলিট হবে
+  createdAt DateTime @default(now())
+
+  // রিলেশন সেটআপ
+  userId String? // লগইন ছাড়া আপলোড করলে এটা নাল থাকবে
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

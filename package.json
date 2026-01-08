@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node dist/server.js",
+    "build": "tsc && npx prisma generate",
+    "dev": "tsx watch src/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,8 +24,7 @@
     "nanoid": "^5.1.6",
     "node-cron": "^4.2.1",
     "pg": "^8.16.3",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "tsx": "^4.21.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
@@ -33,6 +33,9 @@
     "@types/node": "^25.0.3",
     "@types/node-cron": "^3.0.11",
     "@types/pg": "^8.16.0",
-    "prisma": "^7.2.0"
+    "prisma": "^7.2.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3"
   }
 }
